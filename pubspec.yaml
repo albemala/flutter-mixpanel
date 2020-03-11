@@ -4,6 +4,9 @@ version: 0.0.1
 author: Edouard Marquez <moi@edouard-marquez.me>
 homepage: https://github.com/g123k/flutter-mixpanel
 
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
