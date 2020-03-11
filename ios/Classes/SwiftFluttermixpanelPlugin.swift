@@ -45,7 +45,7 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
     mixpanel.flush()
   }
 
-    func reset(@escaping FlutterResult, mixpanel : MixpanelInstance) {
+    func reset(result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
         mixpanel.reset()
         result(nil)
     }
