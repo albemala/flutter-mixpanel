@@ -31,6 +31,12 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
         getDistinctId(result: result, mixpanel: mixpanel)
     case "flush":
         flush(result: result, mixpanel: mixpanel)
+    case "alias":
+        alias(args: args, result: result, mixpanel: mixpanel)
+    case "identify":
+        identify(args: args, result: result, mixpanel: mixpanel)
+    case "reset":
+        reset(result: result, mixpanel: mixpanel)
     default:
         result(FlutterMethodNotImplemented)
     }
@@ -38,6 +44,36 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
     
     mixpanel.flush()
   }
+
+    func reset(@escaping FlutterResult, mixpanel : MixpanelInstance) {
+        mixpanel.reset()
+        result(nil)
+    }
+
+    func alias(args: NSDictionary, result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
+        let alias = (args["alias"] as! String)
+        let original = (args["original"] as! String)
+
+        if (alias.isEmpty || original.isEmpty) {
+            result(FlutterError.init(code: "ERROR", message: "Alias and original can't be empty", details: nil))
+            return
+        }
+
+        mixpanel.createAlias(alias, distinctId: original )
+        result(nil)
+    }
+    
+    func identify(args: NSDictionary, result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
+        let distinctId = (args["distinct_id"] as! String)
+        
+        if (distinctId.isEmpty) {
+            result(FlutterError.init(code: "ERROR", message: "Distinct id cannot be empty", details: nil))
+            return
+        }
+        
+        mixpanel.identify(distinctId: distinctId)
+        result(nil)
+    }
     
     func track(args: NSDictionary, result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
         let eventName = (args["event_name"] as! String)
