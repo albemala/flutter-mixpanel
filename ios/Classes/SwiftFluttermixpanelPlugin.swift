@@ -3,6 +3,9 @@ import UIKit
 import Mixpanel
     
 public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
+    
+    var mixpanel : MixpanelInstance?
+    
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "g123k/fluttermixpanel", binaryMessenger: registrar.messenger())
     let instance = SwiftFluttermixpanelPlugin()
@@ -17,33 +20,39 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
         result(FlutterError.init(code: "NOT_INITIALIZED", message: "Please initialize the Mixpanel API first with a valid token", details: nil))
         return
     }
-    
-    let mixpanel = Mixpanel.initialize(token: token)
-    
-    switch (call.method) {
-    case "track":
-        track(args: args, result: result, mixpanel: mixpanel)
-    case "track_map":
-        trackMap(args: args, result: result, mixpanel: mixpanel)
-    case "track_json":
-        trackJson(args: args, result: result, mixpanel: mixpanel)
-    case "get_distinct_id":
-        getDistinctId(result: result, mixpanel: mixpanel)
-    case "flush":
-        flush(result: result, mixpanel: mixpanel)
-    case "alias":
-        alias(args: args, result: result, mixpanel: mixpanel)
-    case "identify":
-        identify(args: args, result: result, mixpanel: mixpanel)
-    case "reset":
-        reset(result: result, mixpanel: mixpanel)
-    default:
-        result(FlutterMethodNotImplemented)
+    if( call.method == "initialize"){
+        initialize(result: result, token: token)
     }
-    
-    
-    mixpanel.flush()
+    else if let mixpanel = self.mixpanel {
+        switch (call.method) {
+          case "track":
+              track(args: args, result: result, mixpanel: mixpanel)
+          case "track_map":
+              trackMap(args: args, result: result, mixpanel: mixpanel)
+          case "track_json":
+              trackJson(args: args, result: result, mixpanel: mixpanel)
+          case "get_distinct_id":
+              getDistinctId(result: result, mixpanel: mixpanel)
+          case "flush":
+              flush(result: result, mixpanel: mixpanel)
+          case "alias":
+              alias(args: args, result: result, mixpanel: mixpanel)
+          case "identify":
+              identify(args: args, result: result, mixpanel: mixpanel)
+          case "reset":
+              reset(result: result, mixpanel: mixpanel)
+          default:
+              result(FlutterMethodNotImplemented)
+          }
+          
+          mixpanel.flush()
+    }
   }
+    
+    func initialize(result: @escaping FlutterResult, token: String){
+        mixpanel = Mixpanel.initialize(token: token)
+        result(nil)
+    }
 
     func reset(result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
         mixpanel.reset()

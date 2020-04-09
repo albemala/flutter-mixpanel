@@ -17,6 +17,11 @@ class Mixpanel {
     _people = new MixpanelPeople._init(_channel);
   }
 
+  Future<void> initialize() async{
+    await _invokeMethod('initialize');
+    return null;
+  }
+
   Future<void> track(String eventName) async {
     await _invokeMethod('track', args: {'event_name': eventName});
     return null;

@@ -19,6 +19,9 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  * FlutterMixPanelPlugin
  */
 public class FlutterMixPanelPlugin implements MethodCallHandler {
+    private MixpanelAPI mixPanel;
+    private MixPanelPeople people;
+
     /**
      * Plugin registration.
      */
@@ -36,18 +39,13 @@ public class FlutterMixPanelPlugin implements MethodCallHandler {
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
-        MixpanelAPI mixPanel;
-        MixPanelPeople people;
 
-        if (call.hasArgument("token")) {
+
+        if (call.method.startsWith("initialize")) {
             mixPanel = MixpanelAPI.getInstance(activity, call.argument("token").toString());
             people = new MixPanelPeople(mixPanel.getPeople());
-        } else {
-            result.error("NOT_INITIALIZED", "Please initialize the Mixpanel API first with a valid token", null);
-            return;
-        }
-
-        if (call.method.startsWith("people/")) {
+            result.success(null);
+        } else if (call.method.startsWith("people/")) {
             people.onMethodCall(call, result);
         } else if (call.method.equals("track")) {
             track(mixPanel, call, result);
