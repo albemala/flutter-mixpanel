@@ -40,7 +40,11 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
           case "identify":
               identify(args: args, result: result, mixpanel: mixpanel)
           case "reset":
-              reset(result: result, mixpanel: mixpanel)
+              reset(result: result, mixpanel: mixpanel)          
+          case "people/set":
+              peopleSet(args: args, result: result, mixpanel: mixpanel)
+          case "people/identify":
+              result(nil)
           default:
               result(FlutterMethodNotImplemented)
           }
@@ -53,6 +57,11 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
         mixpanel = Mixpanel.initialize(token: token)
         result(nil)
     }
+
+    func peopleSet(args: NSDictionary, result: @escaping FlutterResult, mixpanel : MixpanelInstance){
+        mixpanel.people.set(properties: ["\(args["property_name"] as! String)":"\(args["value"] as! String)"])
+         result(nil)
+   }
 
     func reset(result: @escaping FlutterResult, mixpanel : MixpanelInstance) {
         mixpanel.reset()
