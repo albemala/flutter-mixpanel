@@ -34,6 +34,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.mixpanel.android:mixpanel-android:5.3.+'
+    implementation 'com.mixpanel.android:mixpanel-android:5.8.3'
     implementation 'com.android.support:support-core-utils:27.+'
 }

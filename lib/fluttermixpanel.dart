@@ -245,6 +245,11 @@ class MixpanelPeople {
     return null;
   }
 
+  Future<void> setPushRegistrationId(String registrationId) async {
+    await _invokeMethod('push_registration_id', args: {'registration_id': registrationId});
+    return null;
+  }
+
   Future<dynamic> _invokeMethod(String method, {Map<String, Object> args}) =>
       _channel._invokeMethod('people/$method', args: args);
 }

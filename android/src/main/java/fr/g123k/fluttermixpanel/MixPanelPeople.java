@@ -1,8 +1,5 @@
 package fr.g123k.fluttermixpanel;
 
-import android.telecom.Call;
-import android.util.Log;
-
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
@@ -12,10 +9,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-import static fr.g123k.fluttermixpanel.Utils.mapToJSONObject;
 
 public class MixPanelPeople {
 
@@ -68,6 +62,8 @@ public class MixPanelPeople {
             unset(call, result);
         } else if ("with_identity".equals(method)) {
             withIdentity(call, result);
+        } else if ("push_registration_id".equals(method)) {
+            pushRegistrationid(call, result);
         } else {
             result.notImplemented();
         }
@@ -304,6 +300,16 @@ public class MixPanelPeople {
         }
 
         people.withIdentity(call.argument("distinct_id").toString());
+        result.success(null);
+    }
+
+    private void pushRegistrationid(MethodCall call, Result result) {
+        if (!call.hasArgument("registration_id")) {
+            result.error("ERROR", "The name argument is missing!", null);
+            return;
+        }
+
+        people.setPushRegistrationId(call.argument("registration_id").toString());
         result.success(null);
     }
 
