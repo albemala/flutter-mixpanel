@@ -117,14 +117,13 @@ public class SwiftFluttermixpanelPlugin: NSObject, FlutterPlugin {
             result(FlutterError.init(code: "ERROR", message: "The properties map argument is missing!", details: nil))
             return
         }
-        
-        let props = propertiesMap as! Dictionary<String, Any>
+
         var map = [String: MixpanelType]()
-        
-        for (key, value) in props {
-            map[key] = value as? MixpanelType;
+
+        for (key, value) in propertiesMap ?? NSDictionary(){
+            map[key as! String] = value as? MixpanelType
         }
-        
+
         mixpanel.track(event: eventName, properties: map)
         result(nil)
     }
