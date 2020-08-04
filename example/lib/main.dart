@@ -12,20 +12,19 @@ class _MyAppState extends State<MyApp> {
   @override
   initState() {
     super.initState();
-    initPlatformState();
+    _sendEvents();
   }
 
-  initPlatformState() async {
-    Mixpanel mixPanel = new Mixpanel("<your token>");
+  _sendEvents() async {
+    final mixPanel = Mixpanel("<your token>");
+    await mixPanel.initialize();
 
-    await mixPanel.track("track");
-    await mixPanel.trackJSON("json", '{"toto":"toto","titi":"titi"}');
-    await mixPanel.trackMap("map", {"toto": "toto", "titi": "titi"});
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+//    await mixPanel.track("track");
+//    await mixPanel.trackJSON("json", '{"toto":"toto","titi":"titi"}');
+    await mixPanel.trackMap("test_event", {
+      "prop1": "test1",
+      "prop2": "test2",
+    });
   }
 
   @override
