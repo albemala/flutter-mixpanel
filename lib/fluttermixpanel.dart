@@ -28,9 +28,16 @@ class Mixpanel {
   }
 
   Future<void> trackMap(
-      String eventName, Map<String, Object> properties) async {
-    await _invokeMethod('track_map',
-        args: {'event_name': eventName, 'properties_map': properties});
+      String eventName,
+      Map<String, Object> properties,
+  ) async {
+    await _invokeMethod(
+      'track_map',
+      args: {
+        'event_name': eventName,
+        'properties_map': properties,
+      },
+    );
     return null;
   }
 
